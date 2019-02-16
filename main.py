@@ -6,6 +6,9 @@ def recherche_ind(tableau, nb):
             indice =i
     return indice
 
+def remove_duplicate(d):
+    return [i for n, i in enumerate(d) if i not in d[n + 1:]]
+
 def sous_ensembles (liste, k):
     res = list()
     if k == 2:
@@ -14,6 +17,19 @@ def sous_ensembles (liste, k):
                 res.append(list())
                 res[len(res)-1].append(liste[i])
                 res[len(res)-1].append(liste[j])
+    else:
+        for i in range (len(liste)):
+            for j in range (i+1, len(liste)):
+                res.append(list())
+                res[len(res)-1].extend(liste[i])
+                res[len(res)-1].extend(liste[j])
+                res[len(res)-1] = remove_duplicate(res[len(res)-1])
+                if len(res[len(res)-1]) != k:
+                    del res[len(res)-1]
+
+                res[len(res)-1].sort()
+        res.sort()
+        res = remove_duplicate(res)
     return res
 
 def apriori(transactions, min_occurences):  
