@@ -6,6 +6,15 @@ def recherche_ind(tableau, nb):
             indice =i
     return indice
 
+def sous_ensembles (liste, k):
+    res = list()
+    if k == 2:
+        for i in range (len(liste)):
+            for j in range (i+1, len(liste)):
+                res.append(list())
+                res[i].append(i)
+                res[i].append(j)
+    return res
 
 def apriori(transactions, min_occurences):
     
@@ -14,15 +23,14 @@ def apriori(transactions, min_occurences):
     for i in range(len(transactions)):
         for j in range(len(transactions[i])):
             #print(transactions[i][j])
-            if C1[0].count(transactions[i][j]) ==0:
+            if C1[0].count(transactions[i][j]) == 0:
                 C1[0].append(transactions[i][j])
                 C1[1].append(0)
             C1[1][recherche_ind(C1[0],transactions[i][j])] +=1
     
     print("C1 : ")
     print(C1)
-
-
+    
     #Calcul de L1
     L_tab = [
         [[],[]] #premier indice gère les Lk puis les deux autres item_set et le support
@@ -35,7 +43,9 @@ def apriori(transactions, min_occurences):
     print("L1 : ")
     print(L_tab)
 
-    k=2
+    k=2 #itération
+    C_tab=C1
+
     #On peut commencer la boucle while principale
 
 
@@ -57,8 +67,17 @@ print(apriori(transactions_set,epsilon))
 
 #Tests :
 
-"""
-L = [2,4]
-L.append([1,5,4,6])
-print(L)
-"""
+print("Test")
+L1 = [1,2,3]
+L2 = [[1,2], [1,3], [1,5], [2,3], [2,5], [3,5]]
+
+print(len(L1))
+print(len(L2))
+print(len(L2[0]))
+
+res = sous_ensembles(L1, 2)
+print(res)
+
+print(L1)
+print(L2)
+
