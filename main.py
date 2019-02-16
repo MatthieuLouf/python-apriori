@@ -12,11 +12,11 @@ def sous_ensembles (liste, k):
         for i in range (len(liste)):
             for j in range (i+1, len(liste)):
                 res.append(list())
-                res[i].append(i)
-                res[i].append(j)
+                res[len(res)-1].append(liste[i])
+                res[len(res)-1].append(liste[j])
     return res
 
-def apriori(transactions, min_occurences):
+def apriori(transactions, min_occurences):  
     
     #Calcul de C1
     C1 =[[],[]]
@@ -75,9 +75,13 @@ print(len(L1))
 print(len(L2))
 print(len(L2[0]))
 
-res = sous_ensembles(L1, 2)
-print(res)
+print("\nsous_ensembles :")
+res1 = sous_ensembles(L1, 2)
+res2 = sous_ensembles(L2, 3)
+print(res1)
+print(res2)
 
+print("\nL1, L2 :")
 print(L1)
 print(L2)
 
