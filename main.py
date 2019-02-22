@@ -32,6 +32,23 @@ def sous_ensembles (liste, k):
         res = remove_duplicate(res)
     return res
 
+#renvoie Cn avec le sup : fait le scan D
+def calcule_occurences (set, liste):
+    res = list()
+    res.append(liste)
+    res.append(list())
+    for i in range (len(liste)):
+        res[1].append(0)
+        for j in range (len(set)):
+            tot = 0
+            for k in range (len(liste[i])):
+                if liste[i][k] in set[j]:
+                    tot+=1
+            if tot == len(liste[i]):
+                res[1][i] += 1
+    return res
+
+
 def apriori(transactions, min_occurences):  
     
     #Calcul de C1
@@ -52,7 +69,7 @@ def apriori(transactions, min_occurences):
         [[],[]] #premier indice gère les Lk puis les deux autres item_set et le support
         ] 
     for i in range(len(C1[0])):
-        if C1[1][i]>= min_occurences:
+        if C1[1][i] >= min_occurences:
             L_tab[0][0].append(C1[0][i])
             L_tab[0][1].append(C1[1][i])
 
@@ -81,7 +98,7 @@ epsilon = 3
 print(apriori(transactions_set,epsilon))
 
 
-#Tests :
+#Tests unitaires & cie:
 
 print("Test")
 L1 = [1,2,3]
@@ -96,6 +113,10 @@ res1 = sous_ensembles(L1, 2)
 res2 = sous_ensembles(L2, 3)
 print(res1)
 print(res2)
+
+print("\noccur :")
+print(calcule_occurences(transactions_set, res1))
+print(calcule_occurences(transactions_set, res2))
 
 print("\nL1, L2 :")
 print(L1)
