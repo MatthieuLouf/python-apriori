@@ -1,4 +1,11 @@
 
+def afficher_tab(tab):
+    for i in range(len(tab)):
+        if tab[i]!=[[],[]]:
+            for j in range(len(tab[i][0])):
+                print(tab[i][0][j])
+            
+
 def recherche_ind(tableau, nb):
     indice = 0
     for i in range(len(tableau)):
@@ -48,6 +55,15 @@ def calcule_occurences (set, liste):
                 res[1][i] += 1
     return res
 
+def elimination_ensembles(tab, min_occurences):
+    tab_final = [[],[]]
+
+    for i in range(len(tab[0])):
+        if(tab[1][i])>=min_occurences:
+            tab_final[0].append(tab[0][i])
+            tab_final[1].append(tab[1][i])
+    
+    return tab_final
 
 def apriori(transactions, min_occurences):  
     
@@ -61,29 +77,44 @@ def apriori(transactions, min_occurences):
                 C1[1].append(0)
             C1[1][recherche_ind(C1[0],transactions[i][j])] +=1
     
-    print("C1 : ")
-    print(C1)
+    #print("C1 : ")
+    #print(C1)
+    
     
     #Calcul de L1
-    L_tab = [
-        [[],[]] #premier indice gère les Lk puis les deux autres item_set et le support
-        ] 
-    for i in range(len(C1[0])):
-        if C1[1][i] >= min_occurences:
-            L_tab[0][0].append(C1[0][i])
-            L_tab[0][1].append(C1[1][i])
+    L_tab = [elimination_ensembles(C1,min_occurences)]
+    #print("L1 : ")
+    #print(L_tab)
 
-    print("L1 : ")
-    print(L_tab)
-
-    k=2 #itération
-    C_tab=C1
+    k=2
+    C_tab_k=C1
 
     #On peut commencer la boucle while principale
+    
+    while L_tab[k-2]!=[[],[]]:
+        # Formation de tous les ensembles de taille k possibles à partir du Lk précédent
+        ensembles_possibles_temp = sous_ensembles(L_tab[k-2][0], k)
+
+        # On rajoute un count à tous les ensembles possibles trouvés
+        C_tab_k = calcule_occurences(transactions, ensembles_possibles_temp)
+
+        # On élimine les ensembles dont le nombre d'occurences est inférieur au paramètre
+        L_k = elimination_ensembles(C_tab_k,min_occurences)
+        
+        """print("\n Tour : ",k-2)
+        print(ensembles_possibles_temp)
+        print(C_tab_k)
+        print(L_k)"""
+
+        # On rajoute le groupe d'ensembles trouvés au tableau d'union des Lk
+        L_tab.append(L_k)
+        k=k+1
+        
+
+    return L_tab
 
 
-    #return L_tab
-
+# Utilisation de l'algorithme pour l'ensemble de transactions T donné
 transactions_set = [
     [1,2,5],
     [1,3,5],
@@ -95,9 +126,12 @@ transactions_set = [
 ]
 
 epsilon = 3
-print(apriori(transactions_set,epsilon))
+print("\n Les sous-ensembles d'items frequents avec un nombre d'occurrences > ",epsilon," :\n")
+resultat=apriori(transactions_set,epsilon)
+afficher_tab(resultat)
 
 
+"""
 #Tests unitaires & cie:
 
 print("Test")
@@ -118,7 +152,14 @@ print("\noccur :")
 print(calcule_occurences(transactions_set, res1))
 print(calcule_occurences(transactions_set, res2))
 
+print("\n Elimination possibilités <3")
+test = [[[1, 2], [1, 5], [1, 3], [2, 5], [2, 3], [5, 3]], [4, 5, 2, 4, 2, 3]]
+print(test)
+print(elimination_possibilites(test,3))
+
 print("\nL1, L2 :")
 print(L1)
 print(L2)
+"""
 
+print("\n")
