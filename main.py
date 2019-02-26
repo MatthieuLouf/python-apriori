@@ -75,7 +75,7 @@ def sous_ensembles (liste, k):
     return res
 
 # renvoie Ck avec le support
-def calcule_occurences (set, liste):
+def calcul_occurences (set, liste):
     res = list()
     res.append(liste)
     res.append(list())
@@ -125,7 +125,7 @@ def apriori(dataset, min_occurences):
         ensembles_possibles_temp = sous_ensembles(Lk[k-2][0], k)
 
         # On rajoute un count à tous les ensembles possibles trouvés
-        Ck = calcule_occurences(dataset, ensembles_possibles_temp)
+        Ck = calcul_occurences(dataset, ensembles_possibles_temp)
 
         # On élimine les ensembles dont le nombre d'occurences est inférieur au paramètre
         L_k = elimination_ensembles(Ck,min_occurences)
@@ -140,5 +140,5 @@ def apriori(dataset, min_occurences):
 # Execution de l'algorithme et affichage des résultats
 
 print("\n Les sous-ensembles d'items fréquents avec un nombre d'occurrences > ", epsilon," :\n")
-resultat=apriori(dataset_1,epsilon)
+resultat = apriori(dataset_1, epsilon)
 afficher_resultat(resultat)
